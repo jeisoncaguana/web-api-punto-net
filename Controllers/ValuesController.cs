@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
+
+using System.Data.SqlClient;
+
 namespace webApi.Controllers
 {
     [Route("api/[controller]")]
@@ -16,12 +19,16 @@ namespace webApi.Controllers
         public IActionResult Get()
         {
 
-            //validacion si no hay data 
-            if (false)
-                return BadRequest("No existe infromación para mostrar");
+        SqlServerConection oCnn = new SqlServerConection();
+        oCnn.open();
 
+            SqlDataReader odr = oCnn.ejecutarStoreProcedute('listarPersona', null);  //selejecutarStoreProceduteect("select * from Persona");
+            for (int i = 0;  odr.Read() ; i++)
+            {
+                string dadas = odr["nombre"].ToString();
+            }
 
-
+               
             return Ok(
                     new Object[]
                     {
