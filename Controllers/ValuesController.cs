@@ -18,16 +18,7 @@ namespace webApi.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-
-        SqlServerConection oCnn = new SqlServerConection();
-        oCnn.open();
-
-            SqlDataReader odr = oCnn.listarPersonas("exec [dbo].[listarPersona]");  //selejecutarStoreProceduteect("select * from Persona");
-
-            return Ok(odr.Read());
-
-
-       
+            return Ok("k");       
         }
 
         // GET api/values/5
