@@ -26,6 +26,7 @@ namespace webApi
             oCnn.ConnectionString = this.cadenaConexion;
             oCnn.Open();
         }
+
         public void close() {
             oCnn.Close();
         }
@@ -33,101 +34,17 @@ namespace webApi
 
 
 
-        public SqlDataReader ejecutarStoreProcedute(string nameStoreProcedure, object[] values)
-        {
-            try
-            {
-                string Comando = " declare @msg AS VARCHAR(100); exec " + nameStoreProcedure + " ";
-                for (int i = 0; i < values.Length; i++)
-                {
-
-                    if (i != values.Length - 1)
-                    {
-                        if (values[i].GetType().ToString() != "System.DBNull")
-                            Comando += "'" + values[i] + "',";
-                        else
-                            Comando += "NULL,";
-                    }
-                    else
-                        if (values[i].GetType().ToString() != "System.DBNull")
-                        Comando += "'" + values[i] + "',@msg OUTPUT; select @msg ";
-                    else
-                        Comando += "" + values[i] + ",@msg OUTPUT; select @msg ";
-                }
-
-                cmd = new SqlCommand(Comando, oCnn);
-                dra = cmd.ExecuteReader();
-                return dra;
-            }
-            catch (Exception er)
-            {
-                return null;
-            }
-
-        }
-
-        public SqlDataReader select(string sql) {
-
+        public SqlDataReader ejecutarSQL(string sql) {
             try
             {
                 cmd = new SqlCommand(sql, oCnn);
                 dra = cmd.ExecuteReader();
                 return dra;
-
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-            return  null;
+                return null; 
             }
         }
-
-
-        // Ejecuta procedimientos almacenados en sql server
-        public string ejecutarStoreProcedute(string nameStoreProcedure, object[] values)
-        {
-            try
-            {
-                string Comando = " declare @msg AS VARCHAR(100); exec " + nameStoreProcedure + " ";
-                for (int i = 0; i < values.Length; i++)
-                {
-
-                    if (i != values.Length - 1)
-                    {
-                        if (values[i].GetType().ToString() != "System.DBNull")
-                            Comando += "'" + values[i] + "',";
-                        else
-                            Comando += "NULL,";
-                    }
-                    else
-                        if (values[i].GetType().ToString() != "System.DBNull")
-                        Comando += "'" + values[i] + "',@msg OUTPUT; select @msg ";
-                    else
-                        Comando += "" + values[i] + ",@msg OUTPUT; select @msg ";
-                }
-
-                cmd = new SqlCommand(Comando, oCnn);
-                dra = cmd.ExecuteReader();
-                try
-                {
-                    dra.Read();
-                    string mensaje = dra[0].ToString();
-                    return mensaje;
-                }
-                catch
-                {
-
-
-                }
-            }
-            catch { }
-            finally
-            {
-                dra.Close();
-            }
-            return "ERROR";
-        }
-
-
     }
 }

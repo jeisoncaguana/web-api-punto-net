@@ -22,21 +22,12 @@ namespace webApi.Controllers
         SqlServerConection oCnn = new SqlServerConection();
         oCnn.open();
 
-            SqlDataReader odr = oCnn.ejecutarStoreProcedute('listarPersona', null);  //selejecutarStoreProceduteect("select * from Persona");
-            for (int i = 0;  odr.Read() ; i++)
-            {
-                string dadas = odr["nombre"].ToString();
-            }
+            SqlDataReader odr = oCnn.listarPersonas("exec [dbo].[listarPersona]");  //selejecutarStoreProceduteect("select * from Persona");
 
-               
-            return Ok(
-                    new Object[]
-                    {
-                        new { id = 1 , nombre =  "jeison", edad="2"},
-                        new { id = 1 , nombre =  "cas", edad="3"},
-                        new { id = 1 , nombre =  "guihasn", edad="2"}
-                    }
-                );
+            return Ok(odr.Read());
+
+
+       
         }
 
         // GET api/values/5
